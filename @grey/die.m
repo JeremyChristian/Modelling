@@ -30,11 +30,11 @@ if age>PARAM.GREY_MAXAGE      %if food level < threshold and age > max age then 
     IT_STATS.died_grey(N_IT+1)=IT_STATS.died_grey(N_IT+1)+1;  %update statistics
     MESSAGES.dead(cn)=1;                %update message list
     klld=1;
-    disp('old age')
+
 end
 if cfood<=thold   %if food level < threshold and age > max age then agent dies
     IT_STATS.died_grey(N_IT+1)=IT_STATS.died_grey(N_IT+1)+1;  %update statistics
     MESSAGES.dead(cn)=1;                %update message list
     klld=1;
-    disp('starved')
+
 end

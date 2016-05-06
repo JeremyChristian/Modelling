@@ -12,6 +12,7 @@ function initialise_results(nred,ngrey,nsteps)
                 'died_red',[zeros(1,nsteps+1)],...			%no. agents dying per iteration
                 'died_grey',[zeros(1,nsteps+1)],...		
                 'eaten',[zeros(1,nsteps+1)],...              %no. rabbits eaten per iteration
+                'diseased',[zeros(1,nsteps+1)],... 
                 'mig',[zeros(1,nsteps+1)],...                %no. agents migrating per iteration
                 'tot',[zeros(1,nsteps+1)],...				%total no. agents in model per iteration
                 'tot_red',[zeros(1,nsteps+1)],...             % total no. rabbits

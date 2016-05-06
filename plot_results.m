@@ -23,13 +23,15 @@ function plot_results(agent,nsteps,fmode,outImages)
     %write results to the screen
     nred=IT_STATS.tot_red;
     ngrey=IT_STATS.tot_grey;
+    ndiseased=IT_STATS.diseased;
+    
     disp(strcat('Iteration = ',num2str(N_IT)))
     disp(strcat('No. new red = ',num2str(IT_STATS.div_red(N_IT+1))))
     disp(strcat('No. new grey = ',num2str(IT_STATS.div_grey(N_IT+1))))
     disp(strcat('No. agents migrating = ',num2str(IT_STATS.mig(N_IT+1))))
     disp(strcat('No. red dying = ',num2str(IT_STATS.died_red(N_IT+1))))
     disp(strcat('No. grey dying = ',num2str(IT_STATS.died_grey(N_IT+1))))
-    disp(strcat('No. red eaten = ',num2str(IT_STATS.eaten(N_IT+1))))
+    disp(strcat('No. red infected = ',num2str(IT_STATS.diseased(N_IT+1))))
 
     %plot line graphs of agent numbers and remaining food
     if (fmode==false) || (N_IT==nsteps) || ((fmode==true) && (rem(N_IT , CONTROL_DATA.fmode_display_every)==0))
@@ -46,19 +48,23 @@ function plot_results(agent,nsteps,fmode,outImages)
         f2=figure(2);
         set(f2,'Units','Normalized');
         set(f2,'Position',[0.5 0.5 0.45 0.4]);
-
-        subplot(3,1,1),cla
-        subplot(3,1,1),plot((1:N_IT+1),nred(1:N_IT+1),col{1});
-        subplot(3,1,1),axis([0 nsteps 0 1.1*max(nred)]);
-        subplot(3,1,2),cla
-        subplot(3,1,2),plot((1:N_IT+1),ngrey(1:N_IT+1),col{2});
-        subplot(3,1,2),axis([0 nsteps 0 1.1*max(ngrey)]);
-        subplot(3,1,3),cla
-        subplot(3,1,3),plot((1:N_IT+1),tot_food(1:N_IT+1),'m-');
-        subplot(3,1,3),axis([0 nsteps 0 tot_food(1)]);
-        subplot(3,1,1),title('No. live reds');
-        subplot(3,1,2),title('No. live greys');
-        subplot(3,1,3),title('Total food');
+        
+        subplot(4,1,4),cla
+        subplot(4,1,4),plot((1:N_IT+1),ndiseased(1:N_IT+1),col{1});
+        subplot(4,1,4),axis([0 nsteps 0 1.1*max(ndiseased+1)]);
+        subplot(4,1,1),cla
+        subplot(4,1,1),plot((1:N_IT+1),nred(1:N_IT+1),col{1});
+        subplot(4,1,1),axis([0 nsteps 0 1.1*max(nred)]);
+        subplot(4,1,2),cla
+        subplot(4,1,2),plot((1:N_IT+1),ngrey(1:N_IT+1),col{2});
+        subplot(4,1,2),axis([0 nsteps 0 1.1*max(ngrey)]);
+        subplot(4,1,3),cla
+        subplot(4,1,3),plot((1:N_IT+1),tot_food(1:N_IT+1),'m-');
+        subplot(4,1,3),axis([0 nsteps 0 tot_food(1)]);
+        subplot(4,1,1),title('No. live reds');
+        subplot(4,1,2),title('No. live greys');
+        subplot(4,1,3),title('Total food');
+        subplot(4,1,4),title('Diseased Squirrels');
         drawnow
 
         %create plot of agent locations. 
@@ -131,12 +137,12 @@ function plot_results(agent,nsteps,fmode,outImages)
         title(['Iteration no.= ' num2str(N_IT) '.  No. agents = ' num2str(n)]);
         axis off
         drawnow 
-        if outImages==true  %this outputs images if outImage parameter set to true!!
-            if fmode==true; %this warning is to show not all iterations are being output if fmode=true!
-                    disp('WARNING*** fastmode set - To output all Images for a movie, set fmode to false(fast mode turned off) ');
-            end 
-            filenamejpg=[sprintf('%04d',N_IT)];
-            eval(['print -djpeg90 agent_plot_' filenamejpg]); %print new jpeg to create movie later
-        end
+%         if outImages==true  %this outputs images if outImage parameter set to true!!
+%             if fmode==true; %this warning is to show not all iterations are being output if fmode=true!
+%                     disp('WARNING*** fastmode set - To output all Images for a movie, set fmode to false(fast mode turned off) ');
+%             end 
+%             filenamejpg=[sprintf('%04d',N_IT)];
+%             eval(['print -djpeg90 agent_plot_' filenamejpg]); %print new jpeg to create movie later
+%         end
     end
 end

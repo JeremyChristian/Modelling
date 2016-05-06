@@ -25,9 +25,21 @@ klld=0;
 thold=PARAM.RED_MINFOOD;      %threshold minimum food value for death to occur
 cfood=agt.food;             %get current agent food level
 age=agt.age;                %get current agent age
+diseased=agt.diseased;
+diseasedit=agt.diseasedit;
 
 if cfood<=thold|age>PARAM.RED_MAXAGE      %if food level < threshold and age > max age then agent dies
     IT_STATS.died_red(N_IT+1)=IT_STATS.died_red(N_IT+1)+1;  %update statistics
     MESSAGES.dead(cn)=1;                %update message list
     klld=1;
+end
+if diseased == 1
+    disp('DISEASE');
+    if diseasedit > 10   
+        disp('DEATH BY DISEASE');
+        IT_STATS.died_red(N_IT+1)=IT_STATS.died_red(N_IT+1)+1;  %update statistics
+        MESSAGES.dead(cn)=1;                %update message list
+        klld=1;
+    end 
+    agt.diseasedit = diseasedit + 1;
 end

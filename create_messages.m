@@ -17,6 +17,7 @@ function create_messages(nred,ngrey,agent)
      if isa(agent{an},'red')
         MESSAGES.atype(an)=1;
         MESSAGES.pos(an,:)=get(agent{an},'pos');
+        
      elseif isa(agent{an},'grey')
         MESSAGES.atype(an)=2;
         MESSAGES.pos(an,:)=get(agent{an},'pos');
@@ -25,5 +26,7 @@ function create_messages(nred,ngrey,agent)
         MESSAGES.pos(an,:)=[-1 -1];
      end
      MESSAGES.dead(an)=0;
+     MESSAGES.diseased(an)=0;
+     
  end
      

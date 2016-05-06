@@ -5,6 +5,8 @@ classdef red   %declares red object
         pos;
         speed;
         last_breed;
+        diseased;
+        diseasedit;
     end
     methods                         %note that this class definition mfile contains only the constructor method!
                                     %all additional member functions associated with this class are included as separate mfiles in the @red folder. 
@@ -25,6 +27,8 @@ classdef red   %declares red object
                        r.pos=[];
                        r.speed=[];
                        r.last_breed=[];
+                       r.diseased=0;
+                       r.diseasedit=0;
                     case 1              %input is already a red, so just return!
                        if (isa(varargin{1},'red'))		
                             r=varargin{1};
@@ -38,6 +42,8 @@ classdef red   %declares red object
                        r.pos=varargin{3};               %current position in Cartesian co-ords [x y]
                        r.speed=varargin{4};             %number of kilometres red can migrate in 1 day
                        r.last_breed=varargin{5};        %number of iterations since red last reproduced.
+                       r.diseased=0;
+                       r.diseasedit=0;
                     otherwise
                        error('Invalid no. of input arguments')
                 end

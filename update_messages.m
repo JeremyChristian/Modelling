@@ -43,6 +43,7 @@ for cn=1:temp_n
          if isa(agent{cn},'red')
              MESSAGES.atype(cn)=1;
              IT_STATS.tot_red(N_IT+1)=IT_STATS.tot_red(N_IT+1)+1;
+             
          elseif isa(agent{cn},'grey')
              MESSAGES.atype(cn)=2;
              IT_STATS.tot_grey(N_IT+1)=IT_STATS.tot_grey(N_IT+1)+1;
