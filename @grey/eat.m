@@ -32,7 +32,9 @@ pfood=ENV_DATA.food(cpos(1),cpos(2));   %obtain environment food level at curren
 if pfood>=1   
     
     ENV_DATA.food(cpos(1),cpos(2))=ENV_DATA.food(cpos(1),cpos(2))-1;  %reduce environment food by one unit
-    agt.food=cfood+1;                    %increase agent food by one unit
+    if agt.food < 10
+        agt.food=cfood+1;                    %increase agent food by one unit
+    end
     eaten=1;                            %rabbit has eaten - set flag to one
 else
     agt.food=cfood-1;                   %decrease agent food by one unit

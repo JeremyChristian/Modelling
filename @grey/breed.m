@@ -22,14 +22,20 @@ pos=agt.pos;         %current position
 
 
 if cfood>=flim&last_breed>=tlim  %if food > threshold and age > interval, then create offspring
-   new=grey(0,cfood/2,pos,PARAM.GREY_SPD,0);   %new rabbit agent
-   agt.food=cfood/2;                          %divide food level between 2 agents
-   agt.last_breed=0;
-   agt.age=age+1;
-   IT_STATS.div_grey(N_IT+1)=IT_STATS.div_grey(N_IT+1)+1;             %update statistics
+    if 1.0*rand(1,1) > 0.5
+       new=grey(0,cfood/2,pos,PARAM.GREY_SPD,0);   %new rabbit agent
+       agt.food=cfood/2;                          %divide food level between 2 agents
+       agt.last_breed=0;
+       agt.age=age+1;
+       IT_STATS.div_grey(N_IT+1)=IT_STATS.div_grey(N_IT+1)+1;             %update statistics
    
+    else                            
+        agt.age=age+1;                          %not able to breed, so increment age by 1
+        agt.last_breed=last_breed+1;
+        new=[];
+    end
 else                            
-    agt.age=age+1;                          %not able to breed, so increment age by 1
-    agt.last_breed=last_breed+1;
-    new=[];
+        agt.age=age+1;                          %not able to breed, so increment age by 1
+        agt.last_breed=last_breed+1;
+        new=[];
 end
