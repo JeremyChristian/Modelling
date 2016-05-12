@@ -49,22 +49,29 @@ function plot_results(agent,nsteps,fmode,outImages)
         set(f2,'Units','Normalized');
         set(f2,'Position',[0.5 0.5 0.45 0.4]);
         
-        subplot(4,1,4),cla
-        subplot(4,1,4),plot((1:N_IT+1),ndiseased(1:N_IT+1),col{1});
-        subplot(4,1,4),axis([0 nsteps 0 1.1*max(ndiseased+1)]);
+        subplot(4,1,3),cla
+        subplot(4,1,3),plot((1:N_IT+1),ndiseased(1:N_IT+1),col{1});
+        subplot(4,1,3),axis([0 nsteps 0 1.1*max(ndiseased+1)]);
         subplot(4,1,1),cla
         subplot(4,1,1),plot((1:N_IT+1),nred(1:N_IT+1),col{1});
         subplot(4,1,1),axis([0 nsteps 0 1.1*max(nred)]);
         subplot(4,1,2),cla
         subplot(4,1,2),plot((1:N_IT+1),ngrey(1:N_IT+1),col{2});
         subplot(4,1,2),axis([0 nsteps 0 1.1*max(ngrey)]);
-        subplot(4,1,3),cla
-        subplot(4,1,3),plot((1:N_IT+1),tot_food(1:N_IT+1),'m-');
-        subplot(4,1,3),axis([0 nsteps 0 tot_food(1)]);
+%         subplot(4,1,3),cla
+%         subplot(4,1,3),plot((1:N_IT+1),tot_food(1:N_IT+1),'m-');
+%         subplot(4,1,3),axis([0 nsteps 0 tot_food(1)]);
+        subplot(4,1,4),cla
+        subplot(4,1,4),plot((1:N_IT+1),nred(1:N_IT+1),col{1});
+        hold on;
+        subplot(4,1,4),plot((1:N_IT+1),ngrey(1:N_IT+1),col{2});
+        subplot(4,1,4),axis([0 nsteps 0 1.1*1000]);        
+        
         subplot(4,1,1),title('No. live reds');
         subplot(4,1,2),title('No. live greys');
-        subplot(4,1,3),title('Total food');
-        subplot(4,1,4),title('Diseased Squirrels');
+%         subplot(4,1,3),title('Total food');
+        subplot(4,1,3),title('Diseased Squirrels');
+        subplot(4,1,4),title('Squirrel Population');
         drawnow
 
         %create plot of agent locations. 
