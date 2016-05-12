@@ -31,9 +31,9 @@ for cn=1:n
             curr=disease(curr);
         end
         [curr,eaten]=eat(curr,cn);              %eating rules (rabbits eat food, foxes eat rabbits)
-        if eaten==0
-            curr=migrate(curr,cn);              %if no food was eaten, then migrate in search of some
-        end
+        
+        curr=migrate(curr,cn,eaten);              %if no food was eaten, then migrate in search of some
+        
         [curr,klld]=die(curr,cn);                %death rule (from starvation or old age)
         if klld==0
             new=[];

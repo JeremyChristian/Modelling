@@ -1,4 +1,4 @@
-function [agt]=migrate(agt,cn)
+function [agt]=migrate(agt,cn,eaten)
 
 %migration functions for class RABBIT
 %agt=rabbit object
@@ -44,7 +44,7 @@ red_sq=find(typ==1);                                            %indices of all 
 rpos=MESSAGES.pos(red_sq,:);                                     %extract positions of all rabbits
 csep=sqrt((rpos(:,1)-pos(:,1)).^2+(rpos(:,2)-pos(:,2)).^2);  %calculate distance to all rabbits
 [d,ind]=find(csep);                                            %d is distance to closest rabbit, ind is index of that rabbit
-nrst=red_sq(ind);                                                %index of nearest rabbit(s)
+redsq=red_sq(ind);                                                %index of nearest rabbit(s)
 array=[];
 nx = 0;
 ny = 0;
@@ -52,31 +52,31 @@ c = 0;
 mig=0;                          %flag will be reset to one if rabbit migrates
 [loc_food,xmin,ymin]=extract_local_food(cpos,spd);
 [xf,yf]=min(loc_food);        %extract all rows (=x) and columns (=y) of food matrix where food is present
-disp(loc_food);
 
-%  if d<=spd&length(nrst)>3900    %if there is at least one  rabbit within the search radius        
-%      for i=1:length(d)
-%          if d(i) <= spd
-%              red = red_sq(ind(i));
-%              nx =+ MESSAGES.pos(red,1);    %extract exact location of this rabbit
-%              ny =+ MESSAGES.pos(red,2);
-%          end
-%      end
-%      nx = nx / c;
-%      ny = ny / c;
-%      
-%      angle = atan(ny-pos(2)/nx-pos(1));
-%      while mig==0&cnt<=8    
-%          npos(1)=pos(1)+spd*cos(angle);        %new x co-ordinate
-%          npos(2)=pos(2)+spd*sin(angle);        %new y co-ordinate
-%          if npos(1)<ENV_DATA.bm_size&npos(2)<ENV_DATA.bm_size&npos(1)>=1&npos(2)>=1   %check that fox has not left edge of model - correct if so.
-%             mig=1;
-%          end
-%          cnt=cnt+1;
-%          angle=angle+(pi/4);         %if migration not successful, then increment direction by 45 degrees and try again
-%      end
-%      agt.food=cfood-1; 
-if ~isempty(xf)      
+
+ if d<=spd&length(redsq)>1000    %if there is at least one  rabbit within the search radius        
+     for i=1:length(d)
+         if d(i) <= spd
+             red = red_sq(ind(i));
+             nx =+ MESSAGES.pos(red,1);    %extract exact location of this rabbit
+             ny =+ MESSAGES.pos(red,2);
+         end
+     end
+     nx = nx / c;
+     ny = ny / c;
+     
+     angle = atan(ny-pos(2)/nx-pos(1));
+     while mig==0&cnt<=8    
+         npos(1)=pos(1)+spd*cos(angle);        %new x co-ordinate
+         npos(2)=pos(2)+spd*sin(angle);        %new y co-ordinate
+         if npos(1)<ENV_DATA.bm_size&npos(2)<ENV_DATA.bm_size&npos(1)>=1&npos(2)>=1   %check that fox has not left edge of model - correct if so.
+            mig=1;
+         end
+         cnt=cnt+1;
+         angle=angle+(pi/4);         %if migration not successful, then increment direction by 45 degrees and try again
+     end
+     agt.food=cfood-8; 
+ elseif ~isempty(xf) && eaten == 0      
     xa=xmin+xf-1;                  %x co-ordiantes of all squares containing food
     ya=ymin+yf-1;                  %y co-ordiantes of all squares containing food
     csep=sqrt((xa-pos(:,1)).^2+(ya-pos(:,2)).^2);   %calculate distance to all food
@@ -98,7 +98,7 @@ if ~isempty(xf)
     end
 end
     
-if mig==0                                   %rabbit has been unable to find food, so chooses a random direction to move in      
+if mig==0 && eaten == 0                                  %rabbit has been unable to find food, so chooses a random direction to move in      
     cnt=1;
     dir=rand*2*pi;              
     while mig==0&cnt<=8                     
