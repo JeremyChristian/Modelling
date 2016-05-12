@@ -63,48 +63,48 @@ for x = 1:size
            foodlvl = ENV_DATA.food(x,y);
            if foodlvl < 10
                
-                ENV_DATA.food(x,y) =+ 6;
+                ENV_DATA.food(x,y) =+ 9;
            end
        elseif x * y > 0.8 * size ^ 2
            foodlvl = ENV_DATA.food(x,y);
-           if foodlvl < 10
-                ENV_DATA.food(x,y) =+ 5;
+           if foodlvl < 9
+                ENV_DATA.food(x,y) =+ 8;
            end
        elseif x * y > 0.7 * size ^ 2
            foodlvl = ENV_DATA.food(x,y);
-           if foodlvl < 10
-                ENV_DATA.food(x,y) =+ 5;
+           if foodlvl < 9
+                ENV_DATA.food(x,y) =+ 8;
            end
        elseif x * y > 0.6 * size ^ 2
            foodlvl = ENV_DATA.food(x,y);
-           if foodlvl < 10
-                ENV_DATA.food(x,y) =+ 4;
+           if foodlvl < 8
+                ENV_DATA.food(x,y) =+ 7;
            end
        elseif x * y > 0.5 * size ^ 2
            foodlvl = ENV_DATA.food(x,y);
-           if foodlvl < 10
-                ENV_DATA.food(x,y) =+ 3;
+           if foodlvl < 4
+                ENV_DATA.food(x,y) =+ 4;
            end
        elseif x * y > 0.4 * size ^ 2
            foodlvl = ENV_DATA.food(x,y);
-           if foodlvl < 10
-                ENV_DATA.food(x,y) =+ 2;
+           if foodlvl < 3
+                ENV_DATA.food(x,y) =+ 3;
            end
        elseif x * y > 0.3 * size ^ 2
            foodlvl = ENV_DATA.food(x,y);
-           if foodlvl < 10
+           if foodlvl < 3
                
-                ENV_DATA.food(x,y) =+ 2;
+                ENV_DATA.food(x,y) =+ 3;
            end
        elseif x * y > 0.2 * size ^ 2
            foodlvl = ENV_DATA.food(x,y);
-           if foodlvl < 10
+           if foodlvl < 2
                
                 ENV_DATA.food(x,y) =+ 1;
            end
        elseif x * y > 0.1 * size ^ 2
            foodlvl = ENV_DATA.food(x,y);
-           if foodlvl < 10
+           if foodlvl < 2
                
                 ENV_DATA.food(x,y) =+ 1;
            end

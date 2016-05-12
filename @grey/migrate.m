@@ -54,7 +54,7 @@ mig=0;                          %flag will be reset to one if rabbit migrates
 [xf,yf]=min(loc_food);        %extract all rows (=x) and columns (=y) of food matrix where food is present
 
 
- if d<=spd&length(redsq)>1000    %if there is at least one  rabbit within the search radius        
+ if d<=spd&length(redsq)>16    %if there is at least one  rabbit within the search radius        
      for i=1:length(d)
          if d(i) <= spd
              red = red_sq(ind(i));
