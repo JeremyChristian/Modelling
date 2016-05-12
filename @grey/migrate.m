@@ -14,7 +14,7 @@ function [agt]=migrate(agt,cn)
 %If no food is detected within its search radius it will move randomly (up
 %to 8 atempts without leaving the model edge)
 
-global ENV_DATA IT_STATS N_IT 
+global ENV_DATA IT_STATS N_IT MESSAGES
 %N_IT is current iteration number
 %IT_STATS is data structure containing statistics on model at each
 %iteration (no. agents etc)
@@ -38,12 +38,44 @@ spd=agt.speed;                       %rabbit migration speed in units per iterat
 %loc_food is food distribution in local search area
 %xmin in minimum x co-ord of this area
 %ymin is minimum y co-ord of this area
-[loc_food,xmin,ymin]=extract_local_food(cpos,spd);
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
- 
+
+typ=MESSAGES.atype;                                         %extract types of all agents
+red_sq=find(typ==1);                                            %indices of all rabbits
+rpos=MESSAGES.pos(red_sq,:);                                     %extract positions of all rabbits
+csep=sqrt((rpos(:,1)-pos(:,1)).^2+(rpos(:,2)-pos(:,2)).^2);  %calculate distance to all rabbits
+[d,ind]=find(csep);                                            %d is distance to closest rabbit, ind is index of that rabbit
+nrst=red_sq(ind);                                                %index of nearest rabbit(s)
+array=[];
+nx = 0;
+ny = 0;
+c = 0;
 mig=0;                          %flag will be reset to one if rabbit migrates
-[xf,yf]=find(loc_food);        %extract all rows (=x) and columns (=y) of food matrix where food is present
-if ~isempty(xf)      
+[loc_food,xmin,ymin]=extract_local_food(cpos,spd);
+[xf,yf]=max(loc_food);        %extract all rows (=x) and columns (=y) of food matrix where food is present
+
+
+if d<=spd&length(nrst)>10000    %if there is at least one  rabbit within the search radius        
+    for i=1:length(d)
+        if d(i) <= spd
+            red = red_sq(ind(i));
+            nx =+ MESSAGES.pos(red,1);    %extract exact location of this rabbit
+            ny =+ MESSAGES.pos(red,2);
+        end
+    end
+    nx = nx / c;
+    ny = ny / c;
+    
+    angle = atan(ny-pos(2)/nx-pos(1));
+    while mig==0&cnt<=8    
+        npos(1)=pos(1)+spd*cos(angle);        %new x co-ordinate
+        npos(2)=pos(2)+spd*sin(angle);        %new y co-ordinate
+        if npos(1)<ENV_DATA.bm_size&npos(2)<ENV_DATA.bm_size&npos(1)>=1&npos(2)>=1   %check that fox has not left edge of model - correct if so.
+           mig=1;
+        end
+        cnt=cnt+1;
+        angle=angle+(pi/4);         %if migration not successful, then increment direction by 45 degrees and try again
+    end
+elseif ~isempty(xf)      
     xa=xmin+xf-1;                  %x co-ordiantes of all squares containing food
     ya=ymin+yf-1;                  %y co-ordiantes of all squares containing food
     csep=sqrt((xa-pos(:,1)).^2+(ya-pos(:,2)).^2);   %calculate distance to all food

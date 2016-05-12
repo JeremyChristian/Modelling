@@ -17,8 +17,8 @@ function [agent]=create_agents(nred,ngrey)
  global ENV_DATA MESSAGES PARAM 
   
 bm_size=ENV_DATA.bm_size;
-red_loc=(bm_size-1)*rand(nred,2)+1;      %generate random initial positions for rabbits
-grey_loc=(bm_size-1)*rand(ngrey,2)+1;      %generate random initial positions for foxes
+red_loc=ones(nred,2)*bm_size-1;      %generate random initial positions for rabbits
+grey_loc=ones(ngrey,2)*8;      %generate random initial positions for foxes
 
 MESSAGES.pos=[red_loc;grey_loc];
 

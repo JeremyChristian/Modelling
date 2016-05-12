@@ -34,9 +34,9 @@ if cfood<=thold|age>PARAM.RED_MAXAGE      %if food level < threshold and age > m
     klld=1;
 end
 if diseased == 1
-    disp('DISEASE');
-    if diseasedit > 10   
-        disp('DEATH BY DISEASE');
+    
+    if diseasedit > 30   
+        
         IT_STATS.died_red(N_IT+1)=IT_STATS.died_red(N_IT+1)+1;  %update statistics
         MESSAGES.dead(cn)=1;                %update message list
         klld=1;
