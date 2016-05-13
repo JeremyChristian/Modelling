@@ -8,8 +8,8 @@ function create_params
 
 global PARAM
 
-    PARAM.RED_SPD=2;         %speed of movement - units per itn (rabbit)
-    PARAM.GREY_SPD=2;         %speed of movement - units per itn (fox)
+    PARAM.RED_SPD=1;         %speed of movement - units per itn (rabbit)
+    PARAM.GREY_SPD=1;         %speed of movement - units per itn (fox)
     PARAM.RED_BRDFQ=10;      %breeding frequency - iterations
     PARAM.GREY_BRDFQ=10;
     PARAM.RED_MINFOOD=4;      %minimum food threshold before agent dies 

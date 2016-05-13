@@ -40,30 +40,50 @@ spd=agt.speed;                       %rabbit migration speed in units per iterat
 %ymin is minimum y co-ord of this area
 
 typ=MESSAGES.atype;                                         %extract types of all agents
-grey_sq=find(typ==2);                                            %indices of all rabbits
-rpos=MESSAGES.pos(grey_sq,:);                                     %extract positions of all rabbits
-csep=sqrt((rpos(:,1)-pos(:,1)).^2+(rpos(:,2)-pos(:,2)).^2);  %calculate distance to all rabbits
-[d,ind]=find(csep);                                            %d is distance to closest rabbit, ind is index of that rabbit
-greysq=grey_sq(ind);                                                %index of nearest rabbit(s)
-array=[];
+rb=find(typ==2);                                            %indices of all rabbits
+rpos=MESSAGES.pos(rb,:);                                     %extract positions of all rabbits
+dist=sqrt((rpos(:,1)-pos(:,1)).^2+(rpos(:,2)-pos(:,2)).^2);  %calculate distance to all rabbits
+danger_squirrels = [];
+
+
+for i=1:length(rb)
+    if dist(i)<=spd
+        danger_squirrels = [danger_squirrels,i];
+    end
+end
+
+
+gb=find(typ==1);                                            %indices of all rabbits
+gpos=MESSAGES.pos(gb,:);                                     %extract positions of all rabbits
+gdist=sqrt((gpos(:,1)-pos(:,1)).^2+(gpos(:,2)-pos(:,2)).^2);  %calculate distance to all rabbits
+grey_squirrels = [];
+
+
+for i=1:length(gb)
+    if gdist(i)<=spd
+        grey_squirrels = [grey_squirrels,i];
+    end
+end
+
+
 nx = 0;
 ny = 0;
 c = 0;
 mig=0;                          %flag will be reset to one if rabbit migrates
 [loc_food,xmin,ymin]=extract_local_food(cpos,spd);
-[xf,yf]=min(loc_food);        %extract all rows (=x) and columns (=y) of food matrix where food is present
+[food_x,food_y] = find(loc_food == max(loc_food(:)));
 
- if d<=spd&length(greysq)>2    %if there is at least one  rabbit within the search radius        
-     for i=1:length(d)
-         if d(i) <= spd
-             grey = grey_sq(ind(i));
-             nx =+ MESSAGES.pos(grey,1);    %extract exact location of this rabbit
-             ny =+ MESSAGES.pos(grey,2);
-         end
+
+ if length(danger_squirrels) > 5
+     for i=1:length(danger_squirrels)
+         nx =+ rpos(danger_squirrels(i),1);
+         ny =+ rpos(danger_squirrels(i),2);
      end
      nx = nx / c;
      ny = ny / c;
      
+     disp('MAGIC');
+     cnt=0;
      angle = atan(ny-pos(2)/nx-pos(1));
      while mig==0&cnt<=8    
          npos(1)=pos(1)+spd*cos(angle);        %new x co-ordinate
@@ -74,27 +94,21 @@ mig=0;                          %flag will be reset to one if rabbit migrates
          cnt=cnt+1;
          angle=angle+(pi/4);         %if migration not successful, then increment direction by 45 degrees and try again
      end
-     agt.food=cfood-8;  
- elseif ~isempty(xf) && eaten == 0      
-    xa=xmin+xf-1;                  %x co-ordiantes of all squares containing food
-    ya=ymin+yf-1;                  %y co-ordiantes of all squares containing food
-    csep=sqrt((xa-pos(:,1)).^2+(ya-pos(:,2)).^2);   %calculate distance to all food
-    [d,nrst]=min(csep);     %d is distance to closest food, nrst is index of that food
-    if d<=spd       %if there is at least one lot of food within the search radius        
-        if length(nrst)>1       %if more lot of food located at same distance then randomly pick one to head towards
-            s=round(rand*(length(fx)-1))+1;
-            nrst=nrst(s);
-        end
-        nx=xa(nrst)+rand-0.5;
-        ny=ya(nrst)+rand-0.5;
-        npos=[nx ny];
-        %if agent has left edge of model, then adjust slightly
-        shft=find(npos>=ENV_DATA.bm_size);
-        npos(shft)=ENV_DATA.bm_size-rand;
-        shft=find(npos<=1);
-        npos(shft)=1+rand;
-        mig=1;
-    end
+%      agt.food =+ -10;   
+ elseif ~isempty(loc_food) && eaten == 0 && length(grey_squirrels) < 10            
+        
+    s=round(rand*(length(food_x)-1))+1;
+    food_pos = [food_x(s),food_y(s)];
+
+    nx=food_pos(1)+rand-0.5+xmin;
+    ny=food_pos(2)+rand-0.5+ymin;
+    npos=[nx ny];
+    %if agent has left edge of model, then adjust slightly
+    shft=find(npos>=ENV_DATA.bm_size);
+    npos(shft)=ENV_DATA.bm_size-rand;
+    shft=find(npos<=1);
+    npos(shft)=1+rand;
+    mig=1;
 end
  
  if mig==0 && eaten == 0                                  %rabbit has been unable to find food, so chooses a random direction to move in
