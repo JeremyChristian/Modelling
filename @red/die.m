@@ -37,7 +37,8 @@ if cfood<=thold|age>PARAM.RED_MAXAGE      %if food level < threshold and age > m
 end
 if diseased == 1
     
-    if diseasedit > 30   
+    if diseasedit > PARAM.DISEASE_MORBIDITY
+        
         if 1.0*rand(1,1) > 0.5
             IT_STATS.died_red(N_IT+1)=IT_STATS.died_red(N_IT+1)+1;  %update statistics
             MESSAGES.dead(cn)=1;                %update message list

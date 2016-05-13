@@ -14,9 +14,15 @@ global PARAM
     PARAM.GREY_BRDFQ=10;
     PARAM.RED_MINFOOD=4;      %minimum food threshold before agent dies 
     PARAM.GREY_MINFOOD=4;
+    PARAM.RED_MAXFOOD=10;      %minimum food threshold before agent dies 
+    PARAM.GREY_MAXFOOD=10;
     PARAM.RED_FOODBRD=10;     %minimum food threshold for breeding
     PARAM.GREY_FOODBRD=10;
     PARAM.RED_MAXAGE=40;      %maximum age allowed 
     PARAM.GREY_MAXAGE=40;
+    PARAM.RED_AGGRO=5;
+    PARAM.GREY_AGGRO=5;
+    PARAM.DISEASE_PREVALENCE = 0.1;
+    PARAM.DISEASE_MORBIDITY = 10;
     
     

@@ -29,7 +29,7 @@ function [agt]=disease(agt)
      
 %Modified by D Walker 3/4/08
 
-global  IT_STATS N_IT MESSAGES
+global  IT_STATS N_IT MESSAGES PARAM
    
 pos=agt.pos;                        %extract current position                   
 spd=agt.speed;                      %fox migration speed in units per iteration - this is equal to the food search radius
@@ -44,7 +44,8 @@ nrst=greysq(ind);                                                %index of neare
 
 if d<=spd&length(nrst)>0    %if there is at least one  rabbit within the search radius        
    
-%     IT_STATS.diseased(N_IT+1)=IT_STATS.diseased(N_IT+1)+1;  %update statistics
-%     agt.diseased = 1;
-   
+    if 1.0*rand(1,1) < PARAM.DISEASE_PREVALENCE
+        IT_STATS.diseased(N_IT+1)=IT_STATS.diseased(N_IT+1)+1;  %update statistics
+        agt.diseased = 1;
+    end
 end

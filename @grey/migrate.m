@@ -14,7 +14,7 @@ function [agt]=migrate(agt,cn,eaten)
 %If no food is detected within its search radius it will move randomly (up
 %to 8 atempts without leaving the model edge)
 
-global ENV_DATA IT_STATS N_IT MESSAGES
+global ENV_DATA IT_STATS N_IT MESSAGES PARAM
 %N_IT is current iteration number
 %IT_STATS is data structure containing statistics on model at each
 %iteration (no. agents etc)
@@ -75,7 +75,7 @@ disp(loc_food);
 [food_x,food_y] = find(loc_food == max(loc_food(:)));
 
 disp(danger_squirrels);
- if length(danger_squirrels) > 15       
+ if length(danger_squirrels) > PARAM.GREY_AGGRO       
      for i=1:length(danger_squirrels)
          nx =+ rpos(danger_squirrels(i),1);
          ny =+ rpos(danger_squirrels(i),2);

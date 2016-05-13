@@ -10,7 +10,7 @@ function plot_results(agent,nsteps,fmode,outImages)
 
     % Modified by D Walker 3/4/08
 
-    global N_IT IT_STATS ENV_DATA MESSAGES CONTROL_DATA
+    global N_IT IT_STATS ENV_DATA MESSAGES CONTROL_DATA PARAMS
     %declare variables that can be seen by all functions
     %N_IT is current iteration number
     %ENV_DATA - data structure representing the environment (initialised in
@@ -73,7 +73,12 @@ function plot_results(agent,nsteps,fmode,outImages)
         subplot(4,1,3),title('Diseased Squirrels');
         subplot(4,1,4),title('Squirrel Population');
         drawnow
-
+        
+        if N_IT == 1000
+            filenamejpg=[sprintf('%04d',N_IT)];
+            eval(['print -djpeg90 filename/agent_graph_' filenamejpg]); %print new jpeg to create movie later
+        end
+        
         %create plot of agent locations. 
         f3=figure(3);
 
@@ -98,7 +103,11 @@ function plot_results(agent,nsteps,fmode,outImages)
             if typ(cn)>0                                %only plot live agents
                 pos=get(agent{cn},'pos');               %extract current position    
                 if isa(agent{cn},'red')              %choose plot colour depending on agent type
-                    redo=plot(pos(1),pos(2),'r*');
+                    if agent{cn}.diseased
+                        redo=plot(pos(1),pos(2),'g*');
+                    else
+                        redo=plot(pos(1),pos(2),'r*');
+                    end
                 else   
                     greyo=plot(pos(1),pos(2),'b.'); 
                     set(greyo,'MarkerSize',30);
@@ -144,12 +153,12 @@ function plot_results(agent,nsteps,fmode,outImages)
         title(['Iteration no.= ' num2str(N_IT) '.  No. agents = ' num2str(n)]);
         axis off
         drawnow 
-%         if outImages==true  %this outputs images if outImage parameter set to true!!
-%             if fmode==true; %this warning is to show not all iterations are being output if fmode=true!
-%                     disp('WARNING*** fastmode set - To output all Images for a movie, set fmode to false(fast mode turned off) ');
-%             end 
-%             filenamejpg=[sprintf('%04d',N_IT)];
-%             eval(['print -djpeg90 agent_plot_' filenamejpg]); %print new jpeg to create movie later
-%         end
+        if outImages==true  %this outputs images if outImage parameter set to true!!
+            if fmode==true; %this warning is to show not all iterations are being output if fmode=true!
+                    disp('WARNING*** fastmode set - To output all Images for a movie, set fmode to false(fast mode turned off) ');
+            end 
+            filenamejpg=[sprintf('%04d',N_IT)];
+            eval(['print -djpeg90 filename/agent_plot_' filenamejpg]); %print new jpeg to create movie later
+        end
     end
 end
