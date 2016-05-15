@@ -1,5 +1,5 @@
-classdef grey   %declares grey object
-    properties    %define grey properties (parameters) 
+classdef grey       %declares grey object
+    properties      %define grey properties (parameters) 
         age; 
         food;
         pos;
@@ -10,12 +10,11 @@ classdef grey   %declares grey object
                                     %all additional member functions associated with this class are included as separate mfiles in the @grey folder. 
         function r=grey(varargin) %constructor method for grey - assigns values to grey properties
                 %r=grey(age,food,pos....)
-                %
                 %age of agent (usually 0)
                 %food - amount of food that grey has eaten
                 %pos - vector containg x,y, co-ords 
 
-                %Modified by Martin Bayley on 29/01/13
+                %Modified by J Christian, J Belkhu, L foot 14/5/16
 
 
                 switch nargin           %Use switch statement with nargin,varargin contructs to overload constructor methods

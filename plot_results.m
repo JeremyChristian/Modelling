@@ -1,5 +1,5 @@
 function plot_results(agent,nsteps,fmode,outImages)
-
+testpath = load('testpath.mat');
     %Plots 2d patch images of agents onto background 
     %%%%%%%%%%%
     %plot_results(agent,nr,nf)
@@ -25,13 +25,13 @@ function plot_results(agent,nsteps,fmode,outImages)
     ngrey=IT_STATS.tot_grey;
     ndiseased=IT_STATS.diseased;
     
-    disp(strcat('Iteration = ',num2str(N_IT)))
-    disp(strcat('No. new red = ',num2str(IT_STATS.div_red(N_IT+1))))
-    disp(strcat('No. new grey = ',num2str(IT_STATS.div_grey(N_IT+1))))
-    disp(strcat('No. agents migrating = ',num2str(IT_STATS.mig(N_IT+1))))
-    disp(strcat('No. red dying = ',num2str(IT_STATS.died_red(N_IT+1))))
-    disp(strcat('No. grey dying = ',num2str(IT_STATS.died_grey(N_IT+1))))
-    disp(strcat('No. red infected = ',num2str(IT_STATS.diseased(N_IT+1))))
+    %disp(strcat('Iteration = ',num2str(N_IT)))
+    %disp(strcat('No. new red = ',num2str(IT_STATS.div_red(N_IT+1))))
+    %disp(strcat('No. new grey = ',num2str(IT_STATS.div_grey(N_IT+1))))
+    %disp(strcat('No. agents migrating = ',num2str(IT_STATS.mig(N_IT+1))))
+    %disp(strcat('No. red dying = ',num2str(IT_STATS.died_red(N_IT+1))))
+    %disp(strcat('No. grey dying = ',num2str(IT_STATS.died_grey(N_IT+1))))
+    %disp(strcat('No. red infected = ',num2str(IT_STATS.diseased(N_IT+1))))
 
     %plot line graphs of agent numbers and remaining food
     if (fmode==false) || (N_IT==nsteps) || ((fmode==true) && (rem(N_IT , CONTROL_DATA.fmode_display_every)==0))
@@ -76,7 +76,7 @@ function plot_results(agent,nsteps,fmode,outImages)
         
         if N_IT == 1000
             filenamejpg=[sprintf('%04d',N_IT)];
-            eval(['print -djpeg90 filename/agent_graph_' filenamejpg]); %print new jpeg to create movie later
+            eval(['print -djpeg90 ' testpath.testpath{1} '/agent_graph_' filenamejpg]); %print new jpeg to create movie later
         end
         
         %create plot of agent locations. 
@@ -155,10 +155,13 @@ function plot_results(agent,nsteps,fmode,outImages)
         drawnow 
         if outImages==true  %this outputs images if outImage parameter set to true!!
             if fmode==true; %this warning is to show not all iterations are being output if fmode=true!
-                    disp('WARNING*** fastmode set - To output all Images for a movie, set fmode to false(fast mode turned off) ');
+                    %disp('WARNING*** fastmode set - To output all Images for a movie, set fmode to false(fast mode turned off) ');
             end 
             filenamejpg=[sprintf('%04d',N_IT)];
-            eval(['print -djpeg90 filename/agent_plot_' filenamejpg]); %print new jpeg to create movie later
+            %disp(testpath.testpath{1});
+            string = ['print -djpeg90 ' testpath.testpath{1} '/agent_plot_' filenamejpg];
+            %disp(string);
+            eval(string); %print new jpeg to create movie later
         end
     end
 end

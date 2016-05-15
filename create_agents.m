@@ -17,6 +17,8 @@ function [agent]=create_agents(nred,ngrey)
  global ENV_DATA MESSAGES PARAM 
   
 bm_size=ENV_DATA.bm_size;
+% red_loc=(bm_size-1)*rand(nred,2)+1;
+% grey_loc=(bm_size-1)*rand(ngrey,2)+1;
 red_loc=rand(nred,2);
 red_loc(:,1) = red_loc(:,1) * 10 + 8;
 red_loc(:,2) = red_loc(:,2) * 10 + 8;

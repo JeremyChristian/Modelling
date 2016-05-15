@@ -1,6 +1,6 @@
 function c=set(c,prop_name,val)
 
-%standard function to allow insertion of memory parameters from rabbit object
+%standard function to allow insertion of memory parameters from squirrel object
 
 switch prop_name
    

@@ -51,7 +51,7 @@ function ecolab(size,nred,ngrey,nsteps,fmode,outImages)
         %mov(n_it)=getframe(fig3);
         if n<=0                          %if no more agents, then stop simulation
             break
-            disp('General convergence criteria satisfied - no agents left alive! > ')
+            %disp('General convergence criteria satisfied - no agents left alive! > ')
         end
         if fmode == true                                       % if fastmode is used ...
            for test_l=1 : 5                                    % this checks the total number agents and adjusts the CONTROL_DATA.fmode_display_every variable accoringly to help prevent extreme slowdown
@@ -60,11 +60,11 @@ function ecolab(size,nred,ngrey,nsteps,fmode,outImages)
                end
            end
 %             if IT_STATS.tot_red(n_it) == 0             %fastmode convergence - all rabbits eaten - all foxes will now die
-%                 disp('Fast mode convergence criteria satisfied - no reds left alive! > ')
+%                 %disp('Fast mode convergence criteria satisfied - no reds left alive! > ')
 %                 break
 %             end  
 %             if IT_STATS.tot_grey(n_it) == 0             %fastmode convergence - all foxes starved - rabbits will now proliferate unchecked until all vegitation is eaten
-%                 disp('Fast mode convergence criteria satisfied - no greys left alive ! > ')
+%                 %disp('Fast mode convergence criteria satisfied - no greys left alive ! > ')
 %                 break
 %             end
         end

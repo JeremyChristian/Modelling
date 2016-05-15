@@ -1,18 +1,20 @@
 function [agt]=migrate(agt,cn,eaten)
 
-%migration functions for class RABBIT
-%agt=rabbit object
+%migration functions for squirrel
+%agt=squirrel object
 %cn - current agent number
 
-%SUMMARY OF RABBIT MIGRATE RULE
-%Rabbits will migrate only if they have not eaten
-%Rabbits will always try to migrate towards the nearest food source
-%The rabbit will extract the distibution of food in its LOCAL environment (at
+%SUMMARY OF SQUIRREL MIGRATE RULE
+
+%If they have not eaten Squirrels will always try to migrate towards the largest food source
+%The squirrel will extract the distibution of food in its LOCAL environment (at
 %distances < its daily migration limit)
-%It will identify the location of the nearest food and migrate into it.
+%It will identify the location with the most food and migrate into it.
 %It's new position will be randomly placed within this square
 %If no food is detected within its search radius it will move randomly (up
 %to 8 atempts without leaving the model edge)
+%Regardless of whether they have eaten they will move away from squirrels of the opposite species
+%If surrounded by members of their own species they will migrate in a random direction to disperse.
 
 global ENV_DATA IT_STATS N_IT MESSAGES PARAM
 %N_IT is current iteration number
@@ -27,41 +29,34 @@ global ENV_DATA IT_STATS N_IT MESSAGES PARAM
    %    ENV_DATA.food is  a bm_size x bm_size array containing distribution
    %    of food
 
-mig=0;                               %indicates whether rabbit has successfully migrated
+mig=0;                               %indicates whether squirrel has successfully migrated
 pos=agt.pos;                         %extract current position 
 cpos=round(pos);                     %round up position to nearest grid point   
-spd=agt.speed;                       %rabbit migration speed in units per iteration - this is equal to the food search radius
+spd=agt.speed;                       %squirrel migration speed in units per iteration - this is equal to the food search radius
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%This function reduces the computational overhead. Only LOCAL area
-%is searched for food, as opposed to entire environment
-%loc_food is food distribution in local search area
-%xmin in minimum x co-ord of this area
-%ymin is minimum y co-ord of this area
-
-typ=MESSAGES.atype;                                         %extract types of all agents
-rb=find(typ==2);                                            %indices of all rabbits
-rpos=MESSAGES.pos(rb,:);                                     %extract positions of all rabbits
-dist=sqrt((rpos(:,1)-pos(:,1)).^2+(rpos(:,2)-pos(:,2)).^2);  %calculate distance to all rabbits
+typ=MESSAGES.atype;                                          %extract types of all agents
+greys=find(typ==2);                                             %indices of all squirrel
+gpos=MESSAGES.pos(greys,:);                                     %extract positions of all squirrel
+gdist=sqrt((gpos(:,1)-pos(:,1)).^2+(gpos(:,2)-pos(:,2)).^2);  %calculate distance to all squirrel
 danger_squirrels = [];
 
 
-for i=1:length(rb)
-    if dist(i)<=spd
+for i=1:length(greys)
+    if gdist(i)<=spd
         danger_squirrels = [danger_squirrels,i];
     end
 end
 
 
-gb=find(typ==1);                                            %indices of all rabbits
-gpos=MESSAGES.pos(gb,:);                                     %extract positions of all rabbits
-gdist=sqrt((gpos(:,1)-pos(:,1)).^2+(gpos(:,2)-pos(:,2)).^2);  %calculate distance to all rabbits
-grey_squirrels = [];
+reds=find(typ==1);                                            %indices of all squirrel
+rpos=MESSAGES.pos(reds,:);                                     %extract positions of all squirrel
+rdist=sqrt((rpos(:,1)-pos(:,1)).^2+(rpos(:,2)-pos(:,2)).^2);  %calculate distance to all squirrel
+red_squirrels = [];
 
 
-for i=1:length(gb)
-    if gdist(i)<=spd
-        grey_squirrels = [grey_squirrels,i];
+for i=1:length(reds)
+    if rdist(i)<=spd
+        red_squirrels = [red_squirrels,i];
     end
 end
 
@@ -69,20 +64,19 @@ end
 nx = 0;
 ny = 0;
 c = 0;
-mig=0;                          %flag will be reset to one if rabbit migrates
+mig=0;                          %flag will be reset to one if squirrel migrates
 [loc_food,xmin,ymin]=extract_local_food(cpos,spd);
 [food_x,food_y] = find(loc_food == max(loc_food(:)));
 
 
  if length(danger_squirrels) > PARAM.RED_AGGRO
      for i=1:length(danger_squirrels)
-         nx =+ rpos(danger_squirrels(i),1);
-         ny =+ rpos(danger_squirrels(i),2);
+         nx =+ gpos(danger_squirrels(i),1);
+         ny =+ gpos(danger_squirrels(i),2);
      end
      nx = nx / c;
      ny = ny / c;
      
-     disp('MAGIC');
      cnt=0;
      angle = atan(ny-pos(2)/nx-pos(1));
      while mig==0&cnt<=8    
@@ -94,8 +88,8 @@ mig=0;                          %flag will be reset to one if rabbit migrates
          cnt=cnt+1;
          angle=angle+(pi/4);         %if migration not successful, then increment direction by 45 degrees and try again
      end
-%      agt.food =+ -10;   
- elseif ~isempty(loc_food) && eaten == 0 && length(grey_squirrels) < 10            
+
+ elseif ~isempty(loc_food) && eaten == 0 && length(red_squirrels) < PARAM.RED_COMPETITION            
         
     s=round(rand*(length(food_x)-1))+1;
     food_pos = [food_x(s),food_y(s)];
@@ -111,7 +105,7 @@ mig=0;                          %flag will be reset to one if rabbit migrates
     mig=1;
 end
  
- if mig==0 && eaten == 0                                  %rabbit has been unable to find food, so chooses a random direction to move in
+ if mig==0 && eaten == 0                                  %squirrel has been unable to find food, so chooses a random direction to move in
     cnt=1;
     dir=rand*2*pi;              
     while mig==0&cnt<=8                     

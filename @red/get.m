@@ -1,6 +1,6 @@
 function val=get(c,prop_name)
 
-%standard function to allow extraction of memory parameters from rabbit object
+%standard function to allow extraction of memory parameters from squirrel object
 
 switch prop_name
    

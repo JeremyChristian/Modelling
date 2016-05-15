@@ -17,7 +17,7 @@ ENV_DATA.shape='square';
 ENV_DATA.units='kilometres';
 ENV_DATA.bm_size=size;
 %ENV_DATA.food=floor(ones(size,size));        %distribute food in km x km squares
-ENV_DATA.food = ones(size,size) * 1
+ENV_DATA.food = ones(size,size) * 1;
 %for i = 1:size
  %   for j = 1:size
   %      if i < size/10 && j < size/10
